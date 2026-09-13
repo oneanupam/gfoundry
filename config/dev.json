@@ -1,0 +1,14 @@
+{
+    "dev": {
+        "foundations": {
+            "business_unit": "foundations",
+            "project_id": "extended-ward-500913-f6",
+            "cost_center": 100001
+        },
+        "finance": {
+            "business_unit": "finance",
+            "project_id": "extended-ward-500913-f6",
+            "cost_center": 100002
+        }
+    }
+}

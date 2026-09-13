@@ -1,0 +1,14 @@
+# YAML does not require double quotes around keys or values.
+# You should use quotes when the value could be interpreted as another YAML data type or contains special characters.
+# According to the JSON specification, a JSON document should only contain data structures like arrays and objects and
+# not include comments. This is because JSON is intended to be a simple, easily parsable data format that can be quickly
+# and efficiently processed.
+dev:
+  foundations:
+    business_unit: foundations
+    project_id: extended-ward-500913-f6
+    cost_center: 100001
+  finance:
+    business_unit: finance
+    project_id: extended-ward-500913-f6
+    cost_center: 100002
