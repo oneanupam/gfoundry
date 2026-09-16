@@ -13,6 +13,7 @@ Install the required tools before contributing to this project:
 - [pre-commit](https://pre-commit.com/) >= 4.2.0
 
 ```bash
+# Upgrade pip before installing project dependencies
 python -m pip install --upgrade pip
 ```
 
