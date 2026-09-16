@@ -1,113 +1,92 @@
-# Genesis
+# GFoundry
 
-This repository contains python scripts intended to use in day to day operational activities on google cloud platform.
-Usecases for which the python scripts are written can be found [here](./docs/usecases.md).
+GFoundry is a collection of Python utilities for routine Google Cloud Platform operations. The scripts are designed to support everyday tasks such as resource discovery, auditing, and administrative automation.
 
 ## Prerequisites
 
-Below prerequisites must be fulfilled for the successful execution of code.
+### Software Requirements
 
-### Software Requirement
+Install the required tools before contributing to this project:
 
-Resources in this repository are meant for use with Python 3.x (check the version using `python3 --version`) and pip3 (check the version using `pip3 --version`). If you don't have the compatible version, download it from official python repository.
-
-- [python3](https://www.python.org/downloads/) >= 3.13.0
-- [pip3](https://pypi.org/project/pip/) >= 20.3.4
-
-### Bootstrap Virtual Environment
-
-[venv](https://docs.python.org/3/library/venv.html) is a tool that creates isolated Python environments. These isolated environments can have separate versions of Python packages, which allows you to isolate one project's dependencies from the dependencies of other projects.
-
-**Linux**
+- [Python 3](https://www.python.org/downloads/) >= 3.14.6
+- [pip](https://pypi.org/project/pip/) >= 26.1.2
+- [pre-commit](https://pre-commit.com/) >= 4.2.0
 
 ```bash
-cd your-project
-python3 -m venv env
-source env/bin/activate
-pip install -r requirements.txt
-
-# If you want to stop using the virtual environment and go back to your global Python, you can deactivate it:
-deactivate
+python -m pip install --upgrade pip
 ```
 
-**Note:** Follow the [google article](https://cloud.google.com/python/docs/setup) to setup your Python development environment.
+> [!NOTE]
+> To confirm your environment, run `python3 --version` or `python --version`, and `pip3 --version` or `pip --version`. See the [Python download page](https://www.python.org/downloads/) for installation instructions.
+
+### Set Up a Virtual Environment
+
+It is recommended to create an isolated virtual environment for this project to avoid dependency conflicts with other Python projects.
+
+```bash
+# Linux / macOS
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Windows
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+> [!NOTE]
+> Activating the virtual environment updates your shell PATH so `python` and `pip` point to the environment for the current session. To leave the environment, run `deactivate`. Follow the [google article](https://cloud.google.com/python/docs/setup) to setup your Python development environment.
 
 ## Quick Start
 
-If you want to quickly run and test Python samples without installing python, the recommended approach is to use Cloud Shell.
+If you want to quickly run and test the Python scripts without installing Python locally, the recommended approach is to use Cloud Shell.
 
-Cloud Shell is a Compute Engine virtual machine. The service credentials associated with this virtual machine are automatic, so there is no need to set up or download a service account key.
+Cloud Shell is a Compute Engine virtual machine with automatically provisioned service credentials, so there is no need to download or configure a service account key manually.
 
-Cloud shell terminal is preloaded with softwares and utilities such as Python, gcloud command-line tool, kubectl, and more. letting you get started with less setup.
+The Cloud Shell terminal comes preloaded with common tools and utilities, including Python, the `gcloud` CLI, `kubectl`, and more, helping you get started with minimal setup.
 
-- [x] **Step-01:** Activate Cloud Shell at the top of the Google Cloud Console.
-- [x] **Step-02:** Clone this repository: `git clone https://github.com/anupam-sy/python-gcp-samples.git`
-- [x] **Step-03:** Setup the python virtual environment using [Bootstrap Virtual Environment](#bootstrap-virtual-environment).
+- [x] **Step 01:** Activate Cloud Shell from the Google Cloud Console.
+- [x] **Step 02:** Clone this repository: `git clone https://github.com/oneanupam/gfoundry.git`
+- [x] **Step 03:** Set up the Python virtual environment using [Set Up a Virtual Environment](#set-up-a-virtual-environment).
 
 ### Authentication and Authorization
 
 This client library used in the python script supports authentication via Google Application Default Credentials, or by providing a JSON key file for a Service Account. Google Application Default Credentials (ADC) is the recommended way to authorize and authenticate clients.
 
-## Accessing Cloud APIs
-
-You can access Cloud APIs using client libraries available for many popular programming languages While you can use Google Cloud APIs directly by making raw requests to the server, client libraries provide simplifications that significantly reduce the amount of code you need to write.
-
-1. Cloud Client Libraries are the recommended option for accessing Cloud APIs programmatically, where available. Cloud Client Libraries use the latest client library model.
-   [NEW - Recommended Way] https://github.com/googleapis/google-cloud-python
-
-2. A few Google Cloud APIs don't have Cloud Client Libraries available in all languages. If you want to use one of these APIs and there is no Cloud Client Library for your preferred language, you can still use the previous style of client library, called Google API Client Libraries.
-   [OLD - Not Recommended] https://github.com/googleapis/google-api-python-client
-
-**Note:** It is recommended to use Cloud Client Libraries for Python, where possible, for new code development due to the following reasons:
-
-With Cloud Client Libraries for Python:
-
-- There is a separate client library for each API, so you can choose which client libraries to download. Whereas, google-api-python-client is a single client library for all APIs. As a result, the total package size for google-api-python-client exceeds 50MB.
-- There are stricter controls for breaking changes to the underlying APIs as each client library is focused on a specific API.
-- There are more features in these Cloud Client Libraries as each library is focused on a specific API, and in some cases, the libraries are owned by team who specialized in that API.
-
 ## Run pre-commit
-The pre-commit framework is a powerful, language-agnostic tool for managing Git hooks. Create a .pre-commit-config.yaml file in the root of your repository. Run the below commnad from the git repo root to set up the git hook scripts into your git hooks. It will be installed at .git/hooks/pre-commit
+This repository already includes a `.pre-commit-config.yaml`. Run the following commands to install the hooks locally:
 
 ```bash
+python -m pip install pre-commit
 pre-commit install
-pre-commit install --config <file> # If config file has non-standard name
-pre-commit validate-config # Validate .pre-commit-config.yaml files
+pre-commit validate-config
 ```
 
-now pre-commit will run automatically on git commit. Usually, it runs only for the changed files. Its good to run the hooks against all the files when adding new hooks. To manually run all pre-commit hooks on a repo, use below -
+This installs the hook into `.git/hooks/pre-commit`. Once installed, pre-commit runs automatically when you commit changes. By default, it checks only the files included in the commit.
+
+To run all hooks manually, use:
 
 ```bash
-# to run hooks on all files
 pre-commit run --all-files
-
-# to run hooks on all files using a non-standard naming config file
-pre-commit run --all-files --config .pre-commit-config-old.yaml
-
-# to run individual hook
 pre-commit run <hook_id>
 ```
 
-Once you have pre-commit installed, adding pre-commit plugins to your project is done with the .pre-commit-config.yaml configuration file. You can generate a very basic configuration using `pre-commit sample-config`. Every time you clone a project using pre-commit running pre-commit install should always be the first thing you do.
+## Contributing
 
-## References
+Contributions and suggestions are welcome. Before opening an issue or pull request:
 
-- https://cloud.google.com/python/docs/setup
-- https://cloud.google.com/apis/docs/overview
-- https://cloud.google.com/apis/docs/client-libraries-explained
-- https://cloud.google.com/apis/docs/cloud-client-libraries
-- [NEW] https://cloud.google.com/python/docs/reference
-- [OLD] https://developers.google.com/api-client-library/
-- https://cloud.google.com/docs/samples
-- https://cloud.google.com/compute/docs/samples
-- https://github.com/googleapis/google-cloud-python
-- https://github.com/googleapis/python-compute
-- https://github.com/GoogleCloudPlatform/python-docs-samples
+1. Review the [contribution guidelines](CONTRIBUTING.md).
+2. Install the pre-commit hooks and run them against your changes.
+3. Open an issue for bugs or ideas, or submit a pull request with a clear description of the change.
 
 ## License
 
 This repository is under MIT License.
 
-## Providing feedback
+## References
 
-Open an issue in this GitHub repository.
+- https://cloud.google.com/python/docs/setup
+- [NEW] https://cloud.google.com/python/docs/reference
+- [OLD] https://developers.google.com/api-client-library/
+- https://cloud.google.com/docs/samples
